@@ -1,0 +1,9 @@
+canvas{
+    width: 320px;
+    height: 320px;
+    background-color: rgba(131, 131, 131, 0.329);
+}
+body{
+    display: flex;
+    justify-content: center;
+}
