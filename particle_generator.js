@@ -48,6 +48,5 @@ class Effect {
 }
 
 const effect = new Effect (canvas.width , canvas.height);
-effect.init();
 effect.render(ctx);
 console.log(effect);
