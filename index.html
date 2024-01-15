@@ -9,7 +9,16 @@
 <body > <!--add : onload="dessine(0,0,30);" , for line generator-->
     <canvas id="canvas"></canvas>
     <div class="slidecontainer">
-        <input type="range" min="1" max="200" class="slider" id="myRange" />
+        <p class="titleSlider">Zoom</p>
+        <input type="range" min="0" max="200" class="slider" id="zoomSlider" />
+    </div>
+    <div class="slidecontainer">
+        <p class="titleSlider">Curve</p>
+        <input type="range" min="0" max="200" class="slider" id="curveSlider" />
+    </div>
+    <div class="slidecontainer">
+        <p class="titleSlider">Particles</p>
+        <input type="range" min="0" max="2000" class="slider" id="particleSlider" />
     </div>
     <script src="index.js"></script>
 </body>

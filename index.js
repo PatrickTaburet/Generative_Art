@@ -45,27 +45,31 @@
 // console.log(vraiOuFaux());
 
 
-// -------------TUTO YOUTUBE :Flow Fields
+// -------------TUTO : Flow Fields
 
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-// range slider
+// range slider : to controll settings with a slider (curve, zoom, number of perticles)
 
-let slider = document.getElementById("myRange");
-slider.value = (localStorage.getItem("previousValue")) ?  localStorage.getItem("previousValue") : 100;
-let previousValue = (localStorage.getItem("previousValue")) ?  localStorage.getItem("previousValue") : slider.value;
-console.log(previousValue);
-console.log(slider.value);
-slider.addEventListener("mouseup",  e => {
-    let currentValue = slider.value;
-    localStorage.setItem("previousValue", currentValue);
-    location.reload();
-});
-console.log(localStorage);
-// console.log(slider.value);
+function superSlider(idSlider, idItem, sourceNumber){
+    let slider = document.getElementById(idSlider);
+    console.log(idSlider);
+    slider.value = (localStorage.getItem(idItem)) ?  localStorage.getItem(idItem) : sourceNumber;
+    let previousValue = (localStorage.getItem(idItem)) ?  localStorage.getItem(idItem) : slider.value;
+    console.log(previousValue);
+    console.log(slider.value);
+    slider.addEventListener("mouseup",  e => {
+        let currentValue = slider.value;
+        localStorage.setItem(idItem, currentValue);
+        location.reload();
+        });
+    console.log(localStorage);
+    return (previousValue);
+}
+
 
 // CANVAS SETTINGS
 
@@ -137,16 +141,18 @@ class Effect {
         this.width = this.canvas.width;
         this.height = this.canvas.height;
         this.particles = [];
-        this.numberOfParticles = 1000;
+        this.numberOfParticles = superSlider("particleSlider", "particleValue", 1000);
         this.cellSize = 20;
         this.rows;
         this.cols;
         this.flowField = [];
-        this.curve = 2;
-        this.zoom = previousValue/100;
+        this.curve = superSlider("curveSlider", "curveValue", 100)/10;
+        this.zoom = superSlider('zoomSlider', "zoomValue", 100)/150;
         this.debug = true;
         this.init();
         console.log(this.zoom);
+        console.log(this.curve);
+        console.log(this.numberOfParticles)
         window.addEventListener('keydown', e => {
             if(e.key === "d") this.debug = !this.debug;
         });
