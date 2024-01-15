@@ -52,6 +52,20 @@ let ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+// range slider
+
+let slider = document.getElementById("myRange");
+slider.value = (localStorage.getItem("previousValue")) ?  localStorage.getItem("previousValue") : 100;
+let previousValue = (localStorage.getItem("previousValue")) ?  localStorage.getItem("previousValue") : slider.value;
+console.log(previousValue);
+console.log(slider.value);
+slider.addEventListener("mouseup",  e => {
+    let currentValue = slider.value;
+    localStorage.setItem("previousValue", currentValue);
+    location.reload();
+});
+console.log(localStorage);
+// console.log(slider.value);
 
 // CANVAS SETTINGS
 
@@ -129,10 +143,10 @@ class Effect {
         this.cols;
         this.flowField = [];
         this.curve = 2;
-        this.zoom = 0.11;
+        this.zoom = previousValue/100;
         this.debug = true;
         this.init();
-
+        console.log(this.zoom);
         window.addEventListener('keydown', e => {
             if(e.key === "d") this.debug = !this.debug;
         });
@@ -149,7 +163,7 @@ class Effect {
         this.flowField = [];
             for (let y = 0 ; y < this.rows ; y++ ){
                 for (let x = 0 ; x < this.cols ; x++){
-                    let angle = (Math.cos(x * this.zoom) + Math.sin(y * this.zoom)) * this.curve;
+                    let angle = (Math.cos(x * this.zoom) * Math.sin(y * this.zoom)) * this.curve;
                     this.flowField.push(angle);
                 }
 
