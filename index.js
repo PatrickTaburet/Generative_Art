@@ -56,20 +56,33 @@ canvas.height = window.innerHeight;
 
 function superSlider(idSlider, idItem, sourceNumber){
     let slider = document.getElementById(idSlider);
-    console.log(idSlider);
     slider.value = (localStorage.getItem(idItem)) ?  localStorage.getItem(idItem) : sourceNumber;
     let previousValue = (localStorage.getItem(idItem)) ?  localStorage.getItem(idItem) : slider.value;
-    console.log(previousValue);
-    console.log(slider.value);
     slider.addEventListener("mouseup",  e => {
         let currentValue = slider.value;
         localStorage.setItem(idItem, currentValue);
         location.reload();
         });
-    console.log(localStorage);
+    // console.log(localStorage);
+    // console.log(previousValue);
+    // console.log(slider.value);
     return (previousValue);
 }
 
+// button change math settings
+
+function stateMathButton(){
+    let mathButton = document.getElementById("mathButton");
+    let isClicked = localStorage.hasOwnProperty("state") ? (localStorage.getItem("state") === "true") : true;
+    mathButton.addEventListener("click", e => {
+        isClicked = !isClicked;
+        localStorage.setItem("state", isClicked);
+        location.reload();
+    })
+    return isClicked;
+}
+
+console.log("-> " + stateMathButton());
 
 // CANVAS SETTINGS
 
@@ -93,7 +106,6 @@ class Particle {
         this.color = this.colors[Math.floor(Math.random() * this.colors.length)];
     }
     draw(context){
-        // context.fillRect(this.x, this.y, 10, 10);
         context.beginPath();
         context.moveTo(this.history[0].x, this.history[0].y)
         for (let i=0; i < this.history.length; i++ ){
@@ -142,23 +154,26 @@ class Effect {
         this.height = this.canvas.height;
         this.particles = [];
         this.numberOfParticles = superSlider("particleSlider", "particleValue", 1000);
-        this.cellSize = 20;
+        this.cellSize = superSlider("cellSizeSlider", "CellValue", 20);
         this.rows;
         this.cols;
-        this.flowField = [];
-        this.curve = superSlider("curveSlider", "curveValue", 100)/10;
+        this.curve = superSlider("curveSlider", "curveValue", 100)/5;
         this.zoom = superSlider('zoomSlider', "zoomValue", 100)/150;
         this.debug = true;
         this.init();
-        console.log(this.zoom);
-        console.log(this.curve);
-        console.log(this.numberOfParticles)
+
+
+        console.log("zoom : " + this.zoom);
+        console.log("curve : " + this.curve);
+        console.log("particles : " + this.numberOfParticles);
+        console.log("cell size : " + this.cellSize);
         window.addEventListener('keydown', e => {
             if(e.key === "d") this.debug = !this.debug;
         });
         window.addEventListener("resize", e => {
             this.resize(e.target.innerWidth, e.target.innerHeight)
         });
+
     }
 
     init(){
@@ -167,14 +182,27 @@ class Effect {
         this.rows = Math.floor(this.height / this.cellSize);
         this.cols = Math.floor(this.width / this.cellSize);
         this.flowField = [];
+
+        // change flow field math settigns when click on button
+
+        if (stateMathButton() == true){
             for (let y = 0 ; y < this.rows ; y++ ){
                 for (let x = 0 ; x < this.cols ; x++){
                     let angle = (Math.cos(x * this.zoom) * Math.sin(y * this.zoom)) * this.curve;
                     this.flowField.push(angle);
                 }
-
             }
+        } else {
+            for (let y = 0 ; y < this.rows ; y++ ){
+                for (let x = 0 ; x < this.cols ; x++){
+                    let angle = (Math.sin(x * this.zoom) *0.23/ Math.cos(y * this.zoom)) * this.curve / 2.23;
+                    this.flowField.push(angle);
+                }
+            }
+        }
+        
         // create particles
+
         this.particles = [];
         for (let i = 0 ; i < this.numberOfParticles; i++){
             this.particles.push(new Particle(this));

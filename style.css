@@ -53,7 +53,6 @@ body{
     cursor: pointer;
   }
 
-  
   .slider:hover {
     opacity: 1;
     cursor: pointer;
@@ -65,6 +64,21 @@ body{
     margin-top: 27px;
     font-family:Verdana, Geneva, Tahoma, sans-serif;
   }
-  .sliderBar{
-    
-  }
+.slideBar{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    z-index: 6;
+    margin-top: 10px;
+}
+#mathButton{
+  display: flex;
+  width: 50px;
+  height: 50px;
+  z-index: 5;
+  margin-right: 27px;
+  margin-top: 17px;
+  border-radius: 50%;
+  background-color: #3bff45;
+  ;
+}
